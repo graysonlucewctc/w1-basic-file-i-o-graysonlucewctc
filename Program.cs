@@ -17,13 +17,14 @@ class Program
         //List the characters
         if (menuChoice == "1")
         {
-            //Use the listcharacters function
+            //Use the listCharacters function
             ListCharacters();
         }
 
         //Adding a character
         if (menuChoice == "2")
         {
+            //Geting user info
             Console.Write("Enter your character's name: ");
             string addedName = Console.ReadLine();
 
@@ -52,15 +53,19 @@ class Program
         //leveling up a character
         if (menuChoice == "3")
         {
+            //listing characters to choose from
             ListCharacters();
 
+            //selecting character
             Console.Write("Enter the character's name that would like to level up: ");
             string chosenCharacter = Console.ReadLine();
 
             var lines = File.ReadAllLines("input.csv");
 
+            //creating list to store info while it's being updated
             List<string> updatedLines = new List<string>();
 
+            //running through each line in the csv
             for (int i = 0; i < lines.Length; i++)
             {
                 var cols = lines[i].Split(',');
@@ -71,13 +76,18 @@ class Program
                 var hitpoints = cols[3];
                 var equipment = cols[4];
 
+                //checking if the character name per row is the same as the selected character
                 if (name == chosenCharacter)
                 {
+                    //incrementing the character's level if it's the same
                     level += 1;
                 }
 
+                //pushing the existing/updated lines to the new list
                 updatedLines.Add($"{name},{profession},{level},{hitpoints},{equipment}");
             }
+
+            //write our new list over to the existing csv and replacing all lines
             using (StreamWriter writer = new StreamWriter("input.csv", false))
             {
                 for (int i = 0; i < updatedLines.Count; i++)
@@ -86,15 +96,19 @@ class Program
                 }
             }
 
+            //display csv to show updated/existing characters
             ListCharacters();
         }
 
     }
 
+    //create ListCharacters to be used elsewhere in the code
     public static void ListCharacters()
     {
+        //read all the lines of the csv
         var lines = File.ReadAllLines("input.csv");
 
+        //for each line, split each by a comma and output the values for the user
         for (int i = 0; i < lines.Length; i++)
         {
             var cols = lines[i].Split(',');
